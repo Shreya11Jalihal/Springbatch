@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd    
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/jdbc 
+    http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+	<!-- creation of the jobrepository,creation of DataSource object,transaction 
+		Management -->
+	<bean id="jobRepository"
+		class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="databaseType" value="oracle" />
+		<property name="tablePrefix" value="BATCH_" />
+		<property name="isolationLevelForCreate" value="ISOLATION_DEFAULT" />
+	</bean>
+	<!-- JobLauncher object -->
+	<bean id="jobLauncher"
+		class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository"></property>
+	</bean>
+
+	<!-- Datasource Object -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1522:XE"></property>
+		<property name="username" value="shreyadb"></property>
+		<property name="password" value="shreya"></property>
+	</bean>
+	<!-- TransactionManager Object//Create metadata tables -->
+	<bean id="transactionManager"
+		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager"></bean>
+	<jdbc:initialize-database data-source="dataSource" enabled="true">
+		<jdbc:script location="org/springframework/batch/core/schema-oracle10g.sql"></jdbc:script>
+		<jdbc:script
+			location="org/springframework/batch/core/schema-drop-oracle10g.sql" />
+		
+	</jdbc:initialize-database>
+
+
+</beans>  

@@ -1,0 +1,24 @@
+package main.java.com.example.app;
+
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class Application {
+	public static void main(String[] args) {
+        String[] str = {"spring/batch/config/context.xml","spring/batch/config/job-config.xml"};
+        ApplicationContext ctx = new ClassPathXmlApplicationContext(str);
+        Job job = (Job) ctx.getBean("myjob");
+        JobLauncher jobLauncher = (JobLauncher) ctx.getBean("jobLauncher");
+        try{
+            JobExecution execution = jobLauncher.run(job, new JobParameters());
+            System.out.println("Job Execution Status: "+ execution.getStatus());
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+}

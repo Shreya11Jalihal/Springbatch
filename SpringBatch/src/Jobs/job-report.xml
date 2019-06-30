@@ -22,7 +22,7 @@
 	<bean id="cvsFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader">
 
 		<!-- Read a csv file -->
-		<property name="resource" value="resoources/report.csv" />
+		<property name="resource" value="resources/report.csv" />
 
 		<property name="lineMapper">
 			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -50,7 +50,7 @@
 		<property name="sql">
 			<value>
 			<![CDATA[        
-            	insert into RAW_REPORT(DATE,IMPRESSIONS,CLICKS,EARNING) 
+            	insert into RAW_REPORT(DATE1,IMPRESSIONS,CLICKS,EARNING) 
 			values (:date, :impressions, :clicks, :earning)
             ]]>
 
